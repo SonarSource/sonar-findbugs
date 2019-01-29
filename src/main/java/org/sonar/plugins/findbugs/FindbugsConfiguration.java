@@ -121,6 +121,14 @@ public class FindbugsConfiguration {
               fileSystem.baseDir().getPath());
     }
 
+    for (File classToAnalyze : classFilesToAnalyze) {
+      String absolutePath = classToAnalyze.getCanonicalPath();
+
+      if(!"module-info.class".equals(classToAnalyze.getName())) {
+        findbugsProject.addFile(absolutePath);
+      }
+    }
+
     copyLibs();
     if (annotationsLib != null) {
       // Findbugs dependencies are packaged by Maven. They are not available during execution of unit tests.
@@ -160,7 +168,8 @@ public class FindbugsConfiguration {
                     //See: https://github.com/SonarQubeCommunity/sonar-findbugs/issues/36
                     pred.not(pred.matchesPathPattern("**/package-info.java")),
                     pred.not(pred.matchesPathPattern("**/module-info.java")),
-                    pred.not(pred.matchesPathPattern("**/*.jsp"))
+                    pred.not(pred.matchesPathPattern("**/*.jsp")),
+                    pred.not(pred.matchesPathPattern("**/*.scala"))
             )
     );
   }

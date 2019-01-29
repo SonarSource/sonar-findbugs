@@ -51,7 +51,8 @@ public class FindbugsSensor implements Sensor {
   private static final Logger LOG = LoggerFactory.getLogger(FindbugsSensor.class);
 
   public static final String[] REPOS = {FindbugsRulesDefinition.REPOSITORY_KEY, FbContribRulesDefinition.REPOSITORY_KEY,
-          FindSecurityBugsRulesDefinition.REPOSITORY_KEY, FindSecurityBugsJspRulesDefinition.REPOSITORY_KEY
+          FindSecurityBugsRulesDefinition.REPOSITORY_KEY, FindSecurityBugsJspRulesDefinition.REPOSITORY_KEY,
+          FindSecurityBugsScalaRulesDefinition.REPOSITORY_KEY
   };
 
   private List<String> repositories = new ArrayList<String>();
@@ -109,10 +110,12 @@ public class FindbugsSensor implements Sensor {
     return hasActiveRules("findsecbugs");
   }
 
+  private boolean hasActiveFindSecScalaBugsRules() { return hasActiveRules("findsecbugs-scala"); }
+
   @Override
   public void execute(SensorContext context) {
 
-    if (!hasActiveFindbugsRules() && !hasActiveFbContribRules() && !hasActiveFindSecBugsRules()) {
+    if (!hasActiveFindbugsRules() && !hasActiveFbContribRules() && !hasActiveFindSecBugsRules() && !hasActiveFindSecScalaBugsRules()) {
       return;
     }
 
